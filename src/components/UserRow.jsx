@@ -1,7 +1,16 @@
 import React, { memo, useMemo } from "react";
 import { calculateUserScore } from "../utils/calculateUserScore";
 
-const UserRow = memo(({ user, style, onClick }) => {
+const cellBase = {
+  padding: "0 12px",
+  display: "flex",
+  alignItems: "center",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
+};
+
+const UserRow = memo(({ user, onClick, columns }) => {
   const score = useMemo(() => {
     return calculateUserScore({
       age: user.age,
@@ -9,74 +18,156 @@ const UserRow = memo(({ user, style, onClick }) => {
     });
   }, [user.age, user.salary]);
 
-  // 🔥 id string yoki number bo‘lsa ham crash bo‘lmasin
   const displayId =
-    typeof user.id === "string"
-      ? user.id.split("-")[1]
-      : user.id;
+    typeof user.id === "string" ? user.id.split("-")[1] : user.id;
 
   return (
-    <div
-      style={{
-        ...style,
-        display: "flex",
-        alignItems: "center",
-        padding: "0 16px",
-        borderBottom: "1px solid #e5e7eb",
-        cursor: "pointer",
-        background: "white",
-      }}
-      onClick={onClick}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.backgroundColor = "#f9fafb")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.backgroundColor = "white")
-      }
-    >
-      <div style={{ flex: "0 0 80px", fontSize: 13 }}>
+    <>
+      {/* ID */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.id,
+          fontSize: 13,
+          fontWeight: 600,
+          color: "#6366f1",
+          fontFamily: "monospace",
+        }}
+      >
         #{displayId}
       </div>
 
-      <div style={{ flex: "1 1 200px", fontWeight: 500 }}>
-        {user.firstName} {user.lastName}
+      {/* NAME */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.name,
+          fontWeight: 600,
+          color: "#0f172a",
+        }}
+      >
+        {user.firstName && user.lastName
+          ? `${user.firstName} ${user.lastName}`
+          : user.name}
       </div>
 
-      <div style={{ flex: "1 1 250px", color: "#6b7280" }}>
+      {/* EMAIL */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.email,
+          color: "#64748b",
+        }}
+      >
         {user.email}
       </div>
 
-      <div style={{ flex: "0 0 60px", textAlign: "center" }}>
+      {/* AGE */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.age,
+          justifyContent: "center",
+          color: "#8b5cf6",
+          fontWeight: 700,
+          fontSize: 15,
+        }}
+      >
         {user.age}
       </div>
 
-      <div style={{ flex: "0 0 120px" }}>{user.role}</div>
-
-      <div style={{ flex: "0 0 100px" }}>{user.status}</div>
-
+      {/* ROLE */}
       <div
         style={{
-          flex: "0 0 100px",
-          textAlign: "right",
-          fontWeight: 600,
+          ...cellBase,
+          flex: columns.role,
+        }}
+      >
+        <span
+          style={{
+            padding: "5px 12px",
+            borderRadius: "14px",
+            fontSize: "12px",
+            fontWeight: 500,
+            backgroundColor:
+              user.role === "Admin"
+                ? "#dbeafe"
+                : user.role === "Manager"
+                  ? "#e0e7ff"
+                  : "#f3f4f6",
+            color:
+              user.role === "Admin"
+                ? "#1e40af"
+                : user.role === "Manager"
+                  ? "#4338ca"
+                  : "#4b5563",
+          }}
+        >
+          {user.role}
+        </span>
+      </div>
+
+      {/* STATUS */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.status,
+        }}
+      >
+        <span
+          style={{
+            padding: "5px 12px",
+            borderRadius: "14px",
+            fontSize: "12px",
+            fontWeight: 500,
+            backgroundColor:
+              user.status === "active"
+                ? "#dcfce7"
+                : user.status === "pending"
+                  ? "#fef3c7"
+                  : "#fee2e2",
+            color:
+              user.status === "active"
+                ? "#166534"
+                : user.status === "pending"
+                  ? "#92400e"
+                  : "#991b1b",
+          }}
+        >
+          {user.status}
+        </span>
+      </div>
+
+      {/* SALARY */}
+      <div
+        style={{
+          ...cellBase,
+          flex: columns.salary,
+          justifyContent: "flex-end",
+          fontWeight: 700,
           color: "#059669",
         }}
       >
-        ${user.salary.toLocaleString()}
+        ${user.salary?.toLocaleString()}
       </div>
 
+      {/* SCORE */}
       <div
         style={{
-          flex: "0 0 100px",
-          textAlign: "right",
+          ...cellBase,
+          flex: columns.score,
+          justifyContent: "flex-end",
           fontSize: 13,
-          color: "#9ca3af",
+          color: "#475569",
+          fontWeight: 600,
         }}
       >
         Score: {score}
       </div>
-    </div>
+    </>
   );
 });
+
+UserRow.displayName = "UserRow";
 
 export default UserRow;

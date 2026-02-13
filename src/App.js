@@ -39,27 +39,35 @@ export default function App() {
   }, [allUsers, debouncedSearch, statusFilter, roleFilter]);
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1> Users Dashboard</h1>
+    <main
+      style={{
+        minHeight: "100vh",
+        padding: 24,
+        background: "#f8fafc",
+      }}
+    >
+      <div style={{ padding: 24 }}>
+        <h1> Users Dashboard</h1>
 
-      <SearchFilters
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        roleFilter={roleFilter}
-        setRoleFilter={setRoleFilter}
-      />
-
-      <VirtualizedTable users={filteredUsers} onRowClick={setSelectedUser} />
-
-      {selectedUser && (
-        <EditModal
-          user={selectedUser}
-          onClose={() => setSelectedUser(null)}
-          onSave={() => {}}
+        <SearchFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          roleFilter={roleFilter}
+          setRoleFilter={setRoleFilter}
         />
-      )}
-    </div>
+
+        <VirtualizedTable users={filteredUsers} onRowClick={setSelectedUser} />
+
+        {selectedUser && (
+          <EditModal
+            user={selectedUser}
+            onClose={() => setSelectedUser(null)}
+            onSave={() => {}}
+          />
+        )}
+      </div>
+    </main>
   );
 }

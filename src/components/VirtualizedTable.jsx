@@ -3,55 +3,61 @@ import { FixedSizeList as List } from "react-window";
 import UserRow from "./UserRow";
 import { useSortedUsers } from "../hooks/useSortedUsers";
 
+// 🔥 BARCHA COLUMN WIDTHLAR BIR JOYDA (HEADER + ROW 100% SYNC)
+const COLUMNS = {
+  id: "0 0 80px",
+  name: "1 1 220px",
+  email: "1 1 260px",
+  age: "0 0 80px",
+  role: "0 0 200px",
+  status: "0 0 120px",
+  salary: "0 0 140px",
+  score: "0 0 120px",
+};
+
 const getNextSortState = (currentSortBy, currentDirection, key) => {
   if (currentSortBy !== key) {
     return { sortBy: key, direction: "asc" };
   }
-
   if (currentDirection === "asc") {
     return { sortBy: key, direction: "desc" };
   }
-
   if (currentDirection === "desc") {
     return { sortBy: null, direction: "asc" };
   }
-
   return { sortBy: key, direction: "asc" };
 };
 
-const SortIcon = ({ active, direction }) => {
-  return (
-    <div
+const SortIcon = ({ active, direction }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      marginLeft: 4,
+      opacity: active ? 1 : 0.25,
+      fontSize: 10,
+      lineHeight: "10px",
+    }}
+  >
+    <span
       style={{
-        display: "flex",
-        flexDirection: "column",
-        marginLeft: 4,
-        opacity: active ? 1 : 0.25,
-        transition: "all 0.2s ease",
-        fontSize: 10,
-        lineHeight: "10px",
+        color: active && direction === "asc" ? "#2563eb" : "#94a3b8",
+        fontWeight: 900,
       }}
     >
-      <span
-        style={{
-          color: active && direction === "asc" ? "#2563eb" : "#94a3b8",
-          fontWeight: 900,
-        }}
-      >
-        ▲
-      </span>
-      <span
-        style={{
-          color: active && direction === "desc" ? "#2563eb" : "#94a3b8",
-          fontWeight: 900,
-          marginTop: -2,
-        }}
-      >
-        ▼
-      </span>
-    </div>
-  );
-};
+      ▲
+    </span>
+    <span
+      style={{
+        color: active && direction === "desc" ? "#2563eb" : "#94a3b8",
+        fontWeight: 900,
+        marginTop: -2,
+      }}
+    >
+      ▼
+    </span>
+  </div>
+);
 
 const HeaderCell = ({
   label,
@@ -69,34 +75,24 @@ const HeaderCell = ({
       onClick={() => onSort(columnKey)}
       style={{
         flex,
-        textAlign: align,
         display: "flex",
         alignItems: "center",
         justifyContent:
           align === "right"
             ? "flex-end"
             : align === "center"
-              ? "center"
-              : "flex-start",
+            ? "center"
+            : "flex-start",
         gap: 6,
         cursor: "pointer",
         userSelect: "none",
         padding: "10px 12px",
-        borderRadius: 10,
-        transition: "all 0.2s ease",
-        background: active ? "rgba(37, 99, 235, 0.08)" : "transparent",
+        fontWeight: 600,
         color: active ? "#1d4ed8" : "#334155",
-        fontWeight: active ? 700 : 600,
-      }}
-      onMouseEnter={(e) => {
-        if (!active)
-          e.currentTarget.style.background = "rgba(148,163,184,0.08)";
-      }}
-      onMouseLeave={(e) => {
-        if (!active) e.currentTarget.style.background = "transparent";
+        whiteSpace: "nowrap", // 🔥 MUHIM
       }}
     >
-      <span>{label}</span>
+      {label}
       <SortIcon active={active} direction={sortDirection} />
     </div>
   );
@@ -108,10 +104,8 @@ const Header = ({ sortBy, sortDirection, onSort }) => {
       style={{
         display: "flex",
         padding: "12px 16px",
-        background:
-          "linear-gradient(135deg, rgba(248,250,252,0.9), rgba(241,245,249,0.9))",
-        backdropFilter: "blur(8px)",
-        borderBottom: "1px solid rgba(226,232,240,0.8)",
+        background: "#f8fafc",
+        borderBottom: "1px solid #e2e8f0",
         fontSize: 12,
         textTransform: "uppercase",
         letterSpacing: "0.08em",
@@ -120,64 +114,21 @@ const Header = ({ sortBy, sortDirection, onSort }) => {
         zIndex: 20,
       }}
     >
-      <HeaderCell
-        label="ID"
-        columnKey="id"
-        flex="0 0 80px"
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={onSort}
-      />
-      <HeaderCell
-        label="Name"
-        columnKey="name"
-        flex="1 1 200px"
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={onSort}
-      />
-      <HeaderCell
-        label="Email"
-        columnKey="email"
-        flex="1 1 250px"
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={onSort}
-      />
-      <HeaderCell
-        label="Age"
-        columnKey="age"
-        flex="0 0 80px"
-        align="center"
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={onSort}
-      />
+      <HeaderCell label="ID" columnKey="id" flex={COLUMNS.id} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
+      <HeaderCell label="Name" columnKey="name" flex={COLUMNS.name} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
+      <HeaderCell label="Email" columnKey="email" flex={COLUMNS.email} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
+      <HeaderCell label="Age" columnKey="age" flex={COLUMNS.age} align="center" sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
 
-      <div style={{ flex: "0 0 120px", padding: "10px 12px", fontWeight: 600 }}>
+      <div style={{ flex: COLUMNS.role, padding: "10px 12px", fontWeight: 600, whiteSpace: "nowrap" }}>
         Role
       </div>
-      <div style={{ flex: "0 0 100px", padding: "10px 12px", fontWeight: 600 }}>
+      <div style={{ flex: COLUMNS.status, padding: "10px 12px", fontWeight: 600, whiteSpace: "nowrap" }}>
         Status
       </div>
-      <div
-        style={{
-          flex: "0 0 120px",
-          padding: "10px 12px",
-          textAlign: "right",
-          fontWeight: 600,
-        }}
-      >
+      <div style={{ flex: COLUMNS.salary, padding: "10px 12px", textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
         Salary
       </div>
-      <div
-        style={{
-          flex: "0 0 100px",
-          padding: "10px 12px",
-          textAlign: "right",
-          fontWeight: 600,
-        }}
-      >
+      <div style={{ flex: COLUMNS.score, padding: "10px 12px", textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
         Score
       </div>
     </div>
@@ -190,16 +141,15 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
 
   const handleSort = useCallback(
     (key) => {
-      setSortBy((prevSortBy) => {
-        const next = getNextSortState(prevSortBy, sortDirection, key);
+      setSortBy((prev) => {
+        const next = getNextSortState(prev, sortDirection, key);
         setSortDirection(next.direction);
         return next.sortBy;
       });
     },
-    [sortDirection],
+    [sortDirection]
   );
 
- 
   const sortedUsers = useSortedUsers(users, sortBy, sortDirection);
 
   const Row = useCallback(
@@ -211,24 +161,26 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
         <div
           style={{
             ...style,
-            padding: "0 12px",
-            background: index % 2 === 0 ? "#ffffff" : "rgba(248,250,252,0.6)",
+            display: "flex", // 🔥 HEADER BILAN BIR XIL LAYOUT
+            padding: "0 16px",
+            background: index % 2 === 0 ? "#ffffff" : "#f8fafc",
             borderBottom: "1px solid #f1f5f9",
-            transition: "all 0.2s ease",
+            alignItems: "center",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(37, 99, 235, 0.06)";
+            e.currentTarget.style.background = "#eef2ff";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background =
-              index % 2 === 0 ? "#ffffff" : "rgba(248,250,252,0.6)";
+              index % 2 === 0 ? "#ffffff" : "#f8fafc";
           }}
         >
-          <UserRow user={user} onClick={() => onRowClick?.(user)} />
+          {/* 🔥 EN MUHIM: UserRow ham shu COLUMNS flexni ishlatishi kerak */}
+          <UserRow user={user} onClick={() => onRowClick?.(user)} columns={COLUMNS} />
         </div>
       );
     },
-    [sortedUsers, onRowClick],
+    [sortedUsers, onRowClick]
   );
 
   return (
@@ -236,17 +188,12 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
       style={{
         borderRadius: 20,
         overflow: "hidden",
-        background: "rgba(255,255,255,0.9)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(226,232,240,0.8)",
-        boxShadow: "0 20px 40px rgba(2,6,23,0.08), 0 2px 8px rgba(2,6,23,0.06)",
+        background: "#ffffff",
+        border: "1px solid #e2e8f0",
+        boxShadow: "0 10px 30px rgba(2,6,23,0.06)",
       }}
     >
-      <Header
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={handleSort}
-      />
+      <Header sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
 
       <List
         height={600}
@@ -254,7 +201,6 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
         itemSize={64}
         width="100%"
         overscanCount={10}
-        style={{ background: "transparent" }}
       >
         {Row}
       </List>
