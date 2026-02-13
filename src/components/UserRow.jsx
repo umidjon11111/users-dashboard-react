@@ -10,7 +10,7 @@ const cellBase = {
   textOverflow: "ellipsis",
 };
 
-const UserRow = memo(({ user, onClick, columns }) => {
+const UserRow = memo(({ user, onClick, columns, style }) => {
   const score = useMemo(() => {
     return calculateUserScore({
       age: user.age,
@@ -22,7 +22,16 @@ const UserRow = memo(({ user, onClick, columns }) => {
     typeof user.id === "string" ? user.id.split("-")[1] : user.id;
 
   return (
-    <>
+    <div
+      style={{
+        ...style,
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        cursor: "pointer",
+      }}
+      onClick={onClick}
+    >
       {/* ID */}
       <div
         style={{
@@ -138,7 +147,6 @@ const UserRow = memo(({ user, onClick, columns }) => {
         </span>
       </div>
 
-      {/* SALARY */}
       <div
         style={{
           ...cellBase,
@@ -164,10 +172,9 @@ const UserRow = memo(({ user, onClick, columns }) => {
       >
         Score: {score}
       </div>
-    </>
+    </div>
   );
 });
 
 UserRow.displayName = "UserRow";
-
 export default UserRow;

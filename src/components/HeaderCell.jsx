@@ -1,4 +1,3 @@
-import React from "react";
 import SortIcon from "./SortIcon";
 
 const HeaderCell = ({

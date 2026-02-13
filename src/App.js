@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import VirtualizedTable from "./components/VirtualizedTable";
 import SearchFilters from "./components/SearchFilters";
 import EditModal from "./components/EditModal";

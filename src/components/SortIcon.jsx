@@ -1,5 +1,3 @@
-import React from "react";
-
 const SortIcon = ({ active, direction }) => (
   <div
     style={{

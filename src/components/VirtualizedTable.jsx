@@ -3,7 +3,6 @@ import { FixedSizeList as List } from "react-window";
 import UserRow from "./UserRow";
 import { useSortedUsers } from "../hooks/useSortedUsers";
 
-// 🔥 BARCHA COLUMN WIDTHLAR BIR JOYDA (HEADER + ROW 100% SYNC)
 const COLUMNS = {
   id: "0 0 80px",
   name: "1 1 220px",
@@ -81,15 +80,15 @@ const HeaderCell = ({
           align === "right"
             ? "flex-end"
             : align === "center"
-            ? "center"
-            : "flex-start",
+              ? "center"
+              : "flex-start",
         gap: 6,
         cursor: "pointer",
         userSelect: "none",
         padding: "10px 12px",
         fontWeight: 600,
         color: active ? "#1d4ed8" : "#334155",
-        whiteSpace: "nowrap", // 🔥 MUHIM
+        whiteSpace: "nowrap",
       }}
     >
       {label}
@@ -114,21 +113,80 @@ const Header = ({ sortBy, sortDirection, onSort }) => {
         zIndex: 20,
       }}
     >
-      <HeaderCell label="ID" columnKey="id" flex={COLUMNS.id} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
-      <HeaderCell label="Name" columnKey="name" flex={COLUMNS.name} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
-      <HeaderCell label="Email" columnKey="email" flex={COLUMNS.email} sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
-      <HeaderCell label="Age" columnKey="age" flex={COLUMNS.age} align="center" sortBy={sortBy} sortDirection={sortDirection} onSort={onSort} />
+      <HeaderCell
+        label="ID"
+        columnKey="id"
+        flex={COLUMNS.id}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={onSort}
+      />
+      <HeaderCell
+        label="Name"
+        columnKey="name"
+        flex={COLUMNS.name}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={onSort}
+      />
+      <HeaderCell
+        label="Email"
+        columnKey="email"
+        flex={COLUMNS.email}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={onSort}
+      />
+      <HeaderCell
+        label="Age"
+        columnKey="age"
+        flex={COLUMNS.age}
+        align="center"
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={onSort}
+      />
 
-      <div style={{ flex: COLUMNS.role, padding: "10px 12px", fontWeight: 600, whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          flex: COLUMNS.role,
+          padding: "10px 12px",
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+        }}
+      >
         Role
       </div>
-      <div style={{ flex: COLUMNS.status, padding: "10px 12px", fontWeight: 600, whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          flex: COLUMNS.status,
+          padding: "10px 12px",
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+        }}
+      >
         Status
       </div>
-      <div style={{ flex: COLUMNS.salary, padding: "10px 12px", textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          flex: COLUMNS.salary,
+          padding: "10px 12px",
+          textAlign: "right",
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+        }}
+      >
         Salary
       </div>
-      <div style={{ flex: COLUMNS.score, padding: "10px 12px", textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          flex: COLUMNS.score,
+          padding: "10px 12px",
+          textAlign: "right",
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+        }}
+      >
         Score
       </div>
     </div>
@@ -147,7 +205,7 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
         return next.sortBy;
       });
     },
-    [sortDirection]
+    [sortDirection],
   );
 
   const sortedUsers = useSortedUsers(users, sortBy, sortDirection);
@@ -176,11 +234,15 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
           }}
         >
           {/* 🔥 EN MUHIM: UserRow ham shu COLUMNS flexni ishlatishi kerak */}
-          <UserRow user={user} onClick={() => onRowClick?.(user)} columns={COLUMNS} />
+          <UserRow
+            user={user}
+            onClick={() => onRowClick?.(user)}
+            columns={COLUMNS}
+          />
         </div>
       );
     },
-    [sortedUsers, onRowClick]
+    [sortedUsers, onRowClick],
   );
 
   return (
@@ -193,7 +255,11 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
         boxShadow: "0 10px 30px rgba(2,6,23,0.06)",
       }}
     >
-      <Header sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
+      <Header
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={handleSort}
+      />
 
       <List
         height={600}

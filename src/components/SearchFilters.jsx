@@ -1,5 +1,3 @@
-import React from "react";
-
 const fieldWrapper = {
   display: "flex",
   flexDirection: "column",
