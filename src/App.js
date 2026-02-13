@@ -1,12 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import VirtualizedTable from "./components/VirtualizedTable";
 import SearchFilters from "./components/SearchFilters";
 import EditModal from "./components/EditModal";
+import LoadingSpinner from "./components/LoadingSpinner"; // ⭐ NEW
 import { generateUsers } from "./utils/generateUsers";
 import { useDebounce } from "./hooks/useDebounce";
 
 export default function App() {
-  const [allUsers] = useState(() => generateUsers(10000));
+  const [allUsers, setAllUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // ⭐ LOADER STATE
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -14,8 +17,35 @@ export default function App() {
 
   const debouncedSearch = useDebounce(searchTerm, 400);
 
+  // ⭐ INITIAL LOAD (refresh bo'lganda loader chiqadi)
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadUsers = async () => {
+      setIsLoading(true);
+
+      // Fake delay (real API ga tayyor)
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      const users = generateUsers(10000);
+
+      if (isMounted) {
+        setAllUsers(users);
+        setIsLoading(false);
+      }
+    };
+
+    loadUsers();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const filteredUsers = useMemo(() => {
-    let result = [...allUsers];
+    if (!allUsers.length) return [];
+
+    let result = allUsers;
 
     if (debouncedSearch) {
       const s = debouncedSearch.toLowerCase();
@@ -23,7 +53,8 @@ export default function App() {
         (u) =>
           u.firstName.toLowerCase().includes(s) ||
           u.lastName.toLowerCase().includes(s) ||
-          u.email.toLowerCase().includes(s),
+          u.email.toLowerCase().includes(s) ||
+          u.name?.toLowerCase().includes(s)
       );
     }
 
@@ -32,7 +63,9 @@ export default function App() {
     }
 
     if (roleFilter !== "all") {
-      result = result.filter((u) => u.role === roleFilter);
+      result = result.filter((u) =>
+        u.role.toLowerCase().includes(roleFilter.toLowerCase())
+      );
     }
 
     return result;
@@ -44,10 +77,14 @@ export default function App() {
         minHeight: "100vh",
         padding: 24,
         background: "#f8fafc",
+        position: "relative",
       }}
     >
-      <div style={{ padding: 24 }}>
-        <h1> Users Dashboard</h1>
+      {/* ⭐ GLOBAL LOADER (refresh + heavy compute) */}
+      {isLoading && <LoadingSpinner label="Generating 10,000 users..." />}
+
+      <div style={{ padding: 24, opacity: isLoading ? 0.4 : 1, transition: "opacity 0.3s" }}>
+        <h1 style={{ marginBottom: 20 }}>Users Dashboard</h1>
 
         <SearchFilters
           searchTerm={searchTerm}
@@ -58,7 +95,10 @@ export default function App() {
           setRoleFilter={setRoleFilter}
         />
 
-        <VirtualizedTable users={filteredUsers} onRowClick={setSelectedUser} />
+        <VirtualizedTable
+          users={filteredUsers}
+          onRowClick={setSelectedUser}
+        />
 
         {selectedUser && (
           <EditModal
