@@ -54,7 +54,6 @@ const SearchFilters = ({
         backdropFilter: "blur(6px)",
       }}
     >
-   
       <div style={fieldWrapper}>
         <label htmlFor="search-input" style={labelStyle}>
           Search Users
