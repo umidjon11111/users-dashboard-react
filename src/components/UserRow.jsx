@@ -3,8 +3,17 @@ import { calculateUserScore } from "../utils/calculateUserScore";
 
 const UserRow = memo(({ user, style, onClick }) => {
   const score = useMemo(() => {
-    return calculateUserScore(user);
+    return calculateUserScore({
+      age: user.age,
+      salary: user.salary,
+    });
   }, [user.age, user.salary]);
+
+  // 🔥 id string yoki number bo‘lsa ham crash bo‘lmasin
+  const displayId =
+    typeof user.id === "string"
+      ? user.id.split("-")[1]
+      : user.id;
 
   return (
     <div
@@ -18,20 +27,28 @@ const UserRow = memo(({ user, style, onClick }) => {
         background: "white",
       }}
       onClick={onClick}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f9fafb")}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.backgroundColor = "#f9fafb")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.backgroundColor = "white")
+      }
     >
       <div style={{ flex: "0 0 80px", fontSize: 13 }}>
-        #{user.id.split("-")[1]}
+        #{displayId}
       </div>
 
       <div style={{ flex: "1 1 200px", fontWeight: 500 }}>
         {user.firstName} {user.lastName}
       </div>
 
-      <div style={{ flex: "1 1 250px", color: "#6b7280" }}>{user.email}</div>
+      <div style={{ flex: "1 1 250px", color: "#6b7280" }}>
+        {user.email}
+      </div>
 
-      <div style={{ flex: "0 0 60px", textAlign: "center" }}>{user.age}</div>
+      <div style={{ flex: "0 0 60px", textAlign: "center" }}>
+        {user.age}
+      </div>
 
       <div style={{ flex: "0 0 120px" }}>{user.role}</div>
 
