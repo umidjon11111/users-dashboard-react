@@ -219,7 +219,7 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
         <div
           style={{
             ...style,
-            display: "flex", // 🔥 HEADER BILAN BIR XIL LAYOUT
+            display: "flex",
             padding: "0 16px",
             background: index % 2 === 0 ? "#ffffff" : "#f8fafc",
             borderBottom: "1px solid #f1f5f9",
@@ -233,7 +233,6 @@ const VirtualizedTable = ({ users = [], onRowClick }) => {
               index % 2 === 0 ? "#ffffff" : "#f8fafc";
           }}
         >
-          {/* 🔥 EN MUHIM: UserRow ham shu COLUMNS flexni ishlatishi kerak */}
           <UserRow
             user={user}
             onClick={() => onRowClick?.(user)}

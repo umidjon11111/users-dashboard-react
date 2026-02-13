@@ -54,7 +54,7 @@ const SearchFilters = ({
         backdropFilter: "blur(6px)",
       }}
     >
-      {/* 🔍 Search */}
+   
       <div style={fieldWrapper}>
         <label htmlFor="search-input" style={labelStyle}>
           Search Users
@@ -70,7 +70,6 @@ const SearchFilters = ({
         />
       </div>
 
-      {/* 📊 Status Filter */}
       <div style={fieldWrapper}>
         <label htmlFor="status-filter" style={labelStyle}>
           Status
@@ -89,7 +88,6 @@ const SearchFilters = ({
         </select>
       </div>
 
-      {/* 👤 Role Filter */}
       <div style={fieldWrapper}>
         <label htmlFor="role-filter" style={labelStyle}>
           Role

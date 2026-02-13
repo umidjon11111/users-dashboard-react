@@ -2,13 +2,13 @@ import { useState, useMemo, useEffect } from "react";
 import VirtualizedTable from "./components/VirtualizedTable";
 import SearchFilters from "./components/SearchFilters";
 import EditModal from "./components/EditModal";
-import LoadingSpinner from "./components/LoadingSpinner"; // ⭐ NEW
+import LoadingSpinner from "./components/LoadingSpinner";
 import { generateUsers } from "./utils/generateUsers";
 import { useDebounce } from "./hooks/useDebounce";
 
 export default function App() {
   const [allUsers, setAllUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // ⭐ LOADER STATE
+  const [isLoading, setIsLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -17,14 +17,12 @@ export default function App() {
 
   const debouncedSearch = useDebounce(searchTerm, 400);
 
-  // ⭐ INITIAL LOAD (refresh bo'lganda loader chiqadi)
   useEffect(() => {
     let isMounted = true;
 
     const loadUsers = async () => {
       setIsLoading(true);
 
-      // Fake delay (real API ga tayyor)
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       const users = generateUsers(10000);
@@ -54,7 +52,7 @@ export default function App() {
           u.firstName.toLowerCase().includes(s) ||
           u.lastName.toLowerCase().includes(s) ||
           u.email.toLowerCase().includes(s) ||
-          u.name?.toLowerCase().includes(s)
+          u.name?.toLowerCase().includes(s),
       );
     }
 
@@ -64,7 +62,7 @@ export default function App() {
 
     if (roleFilter !== "all") {
       result = result.filter((u) =>
-        u.role.toLowerCase().includes(roleFilter.toLowerCase())
+        u.role.toLowerCase().includes(roleFilter.toLowerCase()),
       );
     }
 
@@ -80,10 +78,15 @@ export default function App() {
         position: "relative",
       }}
     >
-      {/* ⭐ GLOBAL LOADER (refresh + heavy compute) */}
       {isLoading && <LoadingSpinner label="Generating 10,000 users..." />}
 
-      <div style={{ padding: 24, opacity: isLoading ? 0.4 : 1, transition: "opacity 0.3s" }}>
+      <div
+        style={{
+          padding: 24,
+          opacity: isLoading ? 0.4 : 1,
+          transition: "opacity 0.3s",
+        }}
+      >
         <h1 style={{ marginBottom: 20 }}>Users Dashboard</h1>
 
         <SearchFilters
@@ -95,10 +98,7 @@ export default function App() {
           setRoleFilter={setRoleFilter}
         />
 
-        <VirtualizedTable
-          users={filteredUsers}
-          onRowClick={setSelectedUser}
-        />
+        <VirtualizedTable users={filteredUsers} onRowClick={setSelectedUser} />
 
         {selectedUser && (
           <EditModal

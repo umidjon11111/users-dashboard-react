@@ -25,7 +25,7 @@ export const generateUsers = (count = 10000) => {
       name: `${firstName} ${lastName}`,
       email: faker.internet.email({ firstName, lastName }),
       age: faker.number.int({ min: 20, max: 65 }),
-      role, // endi dropdown bilan match qiladi
+      role,
       status: faker.helpers.arrayElement(["active", "inactive", "pending"]),
       salary: faker.number.int({ min: 40000, max: 150000 }),
       score: faker.number.int({ min: 0, max: 100 }),

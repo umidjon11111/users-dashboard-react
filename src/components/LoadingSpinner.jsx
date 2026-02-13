@@ -35,7 +35,6 @@ export default function LoadingSpinner({ label = "Loading users..." }) {
         <span style={textStyle}>{label}</span>
       </div>
 
-      {/* CSS animation inline */}
       <style>
         {`
           @keyframes spin {
