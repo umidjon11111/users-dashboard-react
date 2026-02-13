@@ -29,17 +29,18 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
         width: "100%",
         height: "100%",
         cursor: "pointer",
+        background: "#ffffff", // 🔥 kontrast uchun aniq fon
       }}
       onClick={onClick}
     >
-      {/* ID */}
+      {/* ID — CONTRAST FIX */}
       <div
         style={{
           ...cellBase,
           flex: columns.id,
           fontSize: 13,
-          fontWeight: 600,
-          color: "#6366f1",
+          fontWeight: 700,
+          color: "#4338ca", // OLD: #6366f1 ❌ (fail)
           fontFamily: "monospace",
         }}
       >
@@ -52,7 +53,7 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
           ...cellBase,
           flex: columns.name,
           fontWeight: 600,
-          color: "#0f172a",
+          color: "#0f172a", // already accessible
         }}
       >
         {user.firstName && user.lastName
@@ -60,24 +61,24 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
           : user.name}
       </div>
 
-      {/* EMAIL */}
+      {/* EMAIL — slightly darker for contrast */}
       <div
         style={{
           ...cellBase,
           flex: columns.email,
-          color: "#64748b",
+          color: "#475569", // OLD: #64748b (borderline)
         }}
       >
         {user.email}
       </div>
 
-      {/* AGE */}
+      {/* AGE — CONTRAST FIX */}
       <div
         style={{
           ...cellBase,
           flex: columns.age,
           justifyContent: "center",
-          color: "#8b5cf6",
+          color: "#6d28d9", // OLD: #8b5cf6 ❌ (fail)
           fontWeight: 700,
           fontSize: 15,
         }}
@@ -98,25 +99,15 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
             borderRadius: "14px",
             fontSize: "12px",
             fontWeight: 500,
-            backgroundColor:
-              user.role === "Admin"
-                ? "#dbeafe"
-                : user.role === "Manager"
-                  ? "#e0e7ff"
-                  : "#f3f4f6",
-            color:
-              user.role === "Admin"
-                ? "#1e40af"
-                : user.role === "Manager"
-                  ? "#4338ca"
-                  : "#4b5563",
+            backgroundColor: "#f1f5f9",
+            color: "#1e293b", // darker = accessible
           }}
         >
           {user.role}
         </span>
       </div>
 
-      {/* STATUS */}
+      {/* STATUS (already good contrast) */}
       <div
         style={{
           ...cellBase,
@@ -128,32 +119,33 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
             padding: "5px 12px",
             borderRadius: "14px",
             fontSize: "12px",
-            fontWeight: 500,
+            fontWeight: 600,
             backgroundColor:
               user.status === "active"
                 ? "#dcfce7"
                 : user.status === "pending"
-                  ? "#fef3c7"
-                  : "#fee2e2",
+                ? "#fef3c7"
+                : "#fee2e2",
             color:
               user.status === "active"
                 ? "#166534"
                 : user.status === "pending"
-                  ? "#92400e"
-                  : "#991b1b",
+                ? "#92400e"
+                : "#991b1b",
           }}
         >
           {user.status}
         </span>
       </div>
 
+      {/* SALARY — make slightly darker green */}
       <div
         style={{
           ...cellBase,
           flex: columns.salary,
           justifyContent: "flex-end",
           fontWeight: 700,
-          color: "#059669",
+          color: "#047857", // OLD: #059669 (borderline)
         }}
       >
         ${user.salary?.toLocaleString()}
@@ -166,7 +158,7 @@ const UserRow = memo(({ user, onClick, columns, style }) => {
           flex: columns.score,
           justifyContent: "flex-end",
           fontSize: 13,
-          color: "#475569",
+          color: "#334155", // stronger contrast
           fontWeight: 600,
         }}
       >
