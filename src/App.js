@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>High-Volume Users Dashboard</h1>
+      <h1> Users Dashboard</h1>
 
       <SearchFilters
         searchTerm={searchTerm}
